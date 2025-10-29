@@ -2,16 +2,27 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+=======
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+>>>>>>> 440d454 (Add Project to Repo)
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
+<<<<<<< HEAD
     use HasApiTokens, HasFactory, Notifiable;
+=======
+    use HasFactory, Notifiable;
+>>>>>>> 440d454 (Add Project to Repo)
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +30,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+<<<<<<< HEAD
         'username',
         'email',
         'password',
@@ -27,6 +39,11 @@ class User extends Authenticatable
         'active',
         'roleId',
         'adjective',
+=======
+        'name',
+        'email',
+        'password',
+>>>>>>> 440d454 (Add Project to Repo)
     ];
 
     /**
@@ -51,9 +68,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+<<<<<<< HEAD
 
     public function role()
     {
         return $this->belongsTo(Role::class, 'roleId', 'id');
     }
+=======
+>>>>>>> 440d454 (Add Project to Repo)
 }
