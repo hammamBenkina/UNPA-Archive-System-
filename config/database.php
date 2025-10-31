@@ -98,6 +98,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'classification' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_URL'),
+            'host' => env('CLASSIFICATION_DB_HOST', '127.0.0.1'),
+            'port' => env('CLASSIFICATION_DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('CLASSIFICATION_DB_USERNAME', 'root'),
+            'password' => env('CLASSIFICATION_DB_PASSWORD', ''),
+            'charset' => env('CLASSIFICATION_DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
@@ -148,7 +163,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
