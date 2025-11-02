@@ -98,12 +98,12 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'classification' => [
-            'driver' => 'pgsql',
+        'cartographic_terms' => [
+            'driver' => env('CLASSIFICATION_DB_CONNECTION' , 'pgsql'),
             'url' => env('DB_URL'),
             'host' => env('CLASSIFICATION_DB_HOST', '127.0.0.1'),
             'port' => env('CLASSIFICATION_DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => env('CLASSIFICATION_DB_DATABASE', 'laravel'),
             'username' => env('CLASSIFICATION_DB_USERNAME', 'root'),
             'password' => env('CLASSIFICATION_DB_PASSWORD', ''),
             'charset' => env('CLASSIFICATION_DB_CHARSET', 'utf8'),
