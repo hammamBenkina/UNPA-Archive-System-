@@ -60,18 +60,18 @@ class ClassificationsCategoryController extends Controller
         $categoriesQuery = ClassificationsCategory::query();
 
 
-        Cache::store('cartographic_terms')->forget('classificationsCategoriesList');
+        // Cache::store('cartographic_terms')->forget('classificationsCategoriesList');
 
-        // تخزين نتيجة الاستعلام في الكاش
-        $categories = Cache::store('cartographic_terms')->rememberForever('classificationsCategoriesList', function () use ($categoriesQuery) {
-            return $categoriesQuery->with('classifications')->get();
-        });
+        // // تخزين نتيجة الاستعلام في الكاش
+        // $categories = Cache::store('cartographic_terms')->rememberForever('classificationsCategoriesList', function () use ($categoriesQuery) {
+        //     return $categoriesQuery->with('classifications')->get();
+        // });
 
 
         //    $categories =  $categoriesQuery->with('classifications')->get();
 
         // إرجاع النتيجة كاستجابة JSON
-        return response()->json($categories, 200);
+        return response()->json($categoriesQuery->with('classifications')->get(), 200);
     }
 
 
