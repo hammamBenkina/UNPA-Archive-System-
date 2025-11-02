@@ -9,16 +9,10 @@ use Illuminate\Support\Facades\Cache;
 
 class ClassificationController extends Controller
 {
-<<<<<<< HEAD
-
-    
     // ================================================================================
     // Planning symbol
     // ================================================================================
 
-
-=======
->>>>>>> 0e90a6f (Complete cartographic terms system)
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +20,6 @@ class ClassificationController extends Controller
     {
         // استعلام لجلب جميع التصنيفات
         $classificationsQuery = Classification::query();
-
 
         // البحث بالكلمات
         if ($request->filled('searchKey')) {
@@ -37,21 +30,21 @@ class ClassificationController extends Controller
             });
         }
 
-
         // التصفية بالفئة
         if ($request->filled('categoryId')) {
             $classificationsQuery->where('categoryId', $request->get('categoryId'));
         }
 
-        
         // الترتيب
         if ($request->has('sortBy') && $request->has('sortDir')) {
             $allowedSorts = ['arName', 'enName', 'created_at'];
             if (in_array($request->sortBy, $allowedSorts)) {
-                $classificationsQuery->orderBy($request->sortBy, $request->boolean('sortDir') ? 'desc' : 'asc');
+                $classificationsQuery->orderBy(
+                    $request->sortBy, 
+                    $request->boolean('sortDir') ? 'desc' : 'asc'
+                );
             }
         }
-
 
         // العلاقات والصفحات
         $classification = $classificationsQuery
@@ -66,25 +59,25 @@ class ClassificationController extends Controller
         return response()->json($classification, 200);
     }
 
-
-
+    /**
+     * List all classifications with cache.
+     */
     public function listOfAllClassifications()
     {
-
         // استعلام لجلب جميع فئات التصنيفات
         $categoriesQuery = Classification::query();
 
-
         // تخزين نتيجة الاستعلام في الكاش
-        $categories = Cache::store('cartographic_terms')->rememberForever('classificationsList', function () use ($categoriesQuery) {
-            return $categoriesQuery->with('category:id,arName,enName')->get();
-        });
-
+        $categories = Cache::store('cartographic_terms')->rememberForever(
+            'classificationsList', 
+            function () use ($categoriesQuery) {
+                return $categoriesQuery->with('category:id,arName,enName')->get();
+            }
+        );
 
         // إرجاع النتيجة كاستجابة JSON
         return response()->json($categories, 200);
     }
-
 
     /**
      * Store a newly created resource in storage.
