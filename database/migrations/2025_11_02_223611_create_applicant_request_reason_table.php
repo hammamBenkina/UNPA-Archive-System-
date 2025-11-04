@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('form')->nullable();
             $table->unsignedBigInteger('to')->nullable();
             $table->foreignId('applicantRequestId')->constrained('applicants_requests')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

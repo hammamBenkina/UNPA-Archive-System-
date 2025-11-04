@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     //
     include_once 'APIRoutes/CartographicTermsRoutes/classificationsRoutes.php';
+    include_once 'APIRoutes/ArchiveRoutes/index.php';
 });

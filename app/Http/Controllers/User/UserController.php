@@ -41,7 +41,6 @@ class UserController extends Controller
 
         $usersQuery = User::query();
 
-
         // البحث بالكلمات
         if ($request->filled('searchKey')) {
             $searchKey = $request->get('searchKey');
