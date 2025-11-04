@@ -101,10 +101,8 @@ class UserController extends Controller
 
 
 
+    public function login(Request $request){
 
-
-    public function login(Request $request)
-    {
         // 1️⃣ التحقق من صحة البيانات المدخلة
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|exists:users,username',
