@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\RateLimiter;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -101,7 +102,8 @@ class UserController extends Controller
 
 
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         // 1️⃣ التحقق من صحة البيانات المدخلة
         $validator = Validator::make($request->all(), [
@@ -193,6 +195,36 @@ class UserController extends Controller
         ], 200);
     }
 
+
+    public function changeActivationStatus(Request $request)
+    {
+        $user = User::find($request->userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'لا يوجد مستخدم بنفس ال ID'
+            ], 404);
+        }
+
+        if ($user->role->name == 'admin') {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'لا يمكن تحديث حالة هذا الحساب لانه يملك نفس صلاحيات حسابك'
+                ],
+                403
+            );
+        }
+
+        $user->active = !$user->active;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'تم تحديث حالة المستخدم بنجاح'
+        ], 200);
+    }
 
     /**
      * Display the specified resource.

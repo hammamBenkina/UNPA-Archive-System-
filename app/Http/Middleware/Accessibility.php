@@ -73,7 +73,6 @@ class Accessibility
                 'record' => ['read', 'report'],
                 'record_item' => ['read', 'report'],
                 'record_item_picture' => ['read', 'report'],
-
             ]
 
         ];
