@@ -139,7 +139,6 @@ class UserController extends Controller
         }
 
 
-
         // 2️⃣ تحديد مفتاح المحاولة الفريدة لكل مستخدم (لمنع محاولات التخمين)
         $key = 'login_attempts:' . $request->ip() . ':' . strtolower($request->username);
 
@@ -293,6 +292,7 @@ class UserController extends Controller
             'message' => 'تم تحديث كلمة المرور بنجاح.',
         ], 200);
     }
+
 
     /**
      * Display the specified resource.
