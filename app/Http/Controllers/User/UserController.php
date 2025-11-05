@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -124,6 +125,7 @@ class UserController extends Controller
         }
 
 
+
         // 2️⃣ تحديد مفتاح المحاولة الفريدة لكل مستخدم (لمنع محاولات التخمين)
         $key = 'login_attempts:' . $request->ip() . ':' . strtolower($request->username);
 
@@ -226,20 +228,146 @@ class UserController extends Controller
         ], 200);
     }
 
+
+    public function updatePersonalPassword(Request $request, int $userId)
+    {
+
+        // 1️⃣ التحقق من البيانات المرسلة
+        $request->validate([
+            'password' => 'required|string|min:8|max:255',
+        ]);
+
+        // 2️⃣ جلب المستخدم من قاعدة البيانات
+        $user = User::find($userId);
+
+        // 3️⃣ إنشاء مفتاح فريد لمحاولات تسجيل الدخول بناءً على IP والمستخدم
+        $key = 'login_attempts:' . $request->ip() . ':' . strtolower($userId);
+
+        // 4️⃣ التحقق مما إذا تم تجاوز الحد المسموح به من المحاولات
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'status' => false,
+                'message' => "تم تجاوز عدد المحاولات، يرجى المحاولة بعد {$seconds} ثانية.",
+            ], 429); // 429 Too Many Requests
+        }
+
+        // 5️⃣ التحقق من صحة بيانات المستخدم وكلمة المرور القديمة (إن وُجدت)
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            // 6️⃣ زيادة عدد المحاولات الفاشلة - تبقى لمدة 60 ثانية
+            RateLimiter::hit($key, 60);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'بيانات الدخول غير صحيحة.',
+            ], 401); // 401 Unauthorized
+        }
+
+        // 7️⃣ إعادة تعيين المحاولات الفاشلة بعد النجاح
+        RateLimiter::clear($key);
+
+        // 8️⃣ تحديث كلمة المرور الجديدة بعد تشفيرها
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        // 9️⃣ حذف جميع الـ Tokens القديمة لضمان تسجيل الخروج من جميع الأجهزة
+        $user->tokens()->delete();
+
+        // 🔟 إرجاع البيانات النهائية للمستخدم
+        return response()->json([
+            'status' => true,
+            'message' => 'تم تحديث كلمة المرور بنجاح.',
+        ], 200);
+    }
+
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Request $request, int $userId)
     {
-        //
+        // 1️⃣ جلب المستخدم من قاعدة البيانات
+        $user = User::find($userId);
+
+        // 2️⃣ التحقق إذا كان المستخدم موجود
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'المستخدم غير موجود.',
+            ], 404); // 404 Not Found
+        }
+
+        // 3️⃣ التحقق من صلاحية المستخدم الحالي للوصول إلى بيانات المستخدم المطلوب
+        // السماح فقط للمسؤول أو صاحب الحساب نفسه
+        // if ($request->user()->id !== $user->id && !$request->user()->is_admin) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'ليس لديك الصلاحية للوصول إلى هذا المستخدم.',
+        //     ], 403); // 403 Forbidden
+        // }
+
+        // 4️⃣ تحضير البيانات لإرجاعها مع إزالة الحقول الحساسة
+        $userData = $user->only([
+            'id',
+            'username',
+            'email',
+            'phoneNumber',
+            'createdBy',
+            'active',
+            'roleId',
+            'adjective',
+            'created_at',
+            'updated_at',
+        ]);
+
+        // 5️⃣ إرجاع البيانات بنجاح
+        return response()->json([
+            'status' => true,
+            'message' => 'تم جلب بيانات المستخدم بنجاح.',
+            'user' => $userData
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, int $userId)
     {
+
         //
+        // 1️⃣ جلب المستخدم
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'المستخدم غير موجود.'
+            ], 404);
+        }
+
+        if (auth()->user()->id != $userId and auth()->user()->role->name != 'admin') {
+            return response()->json([
+                'status' => false,
+                'message' => 'لا تملك الصلاحيات لتنفيذ هذه العملية'
+            ], 403);
+        }
+
+
+        // 2️⃣ تحديث البيانات المرسلة
+        $user->username    = $request->username;
+        $user->email       = $request->email;
+        $user->phoneNumber = $request->phoneNumber;
+
+        $user->save();
+
+        // 3️⃣ حذف جميع التوكنات القديمة بعد تغيير كلمة المرور
+        $user->tokens()->delete();
+
+        // 4️⃣ إرجاع الاستجابة بنجاح
+        return response()->json([
+            'status' => true,
+            'message' => 'تم تحديث بيانات المستخدم بنجاح.',
+            'user' => $user->only(['id', 'username', 'email', 'phoneNumber', 'created_at', 'updated_at'])
+        ], 200);
     }
 
     /**

@@ -30,3 +30,4 @@ return new class extends Migration
         Schema::dropIfExists('applicant_request_reason');
     }
 };
+     

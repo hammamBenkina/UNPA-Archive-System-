@@ -1,0 +1,65 @@
+[33mcommit f07329c1b73f0fb9f87e580ad6dfd1f08223d922[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Wed Nov 5 01:11:39 2025 +0200
+
+    Complete change activation status of user in backend
+
+[33mcommit 4a70903fd8d350210e2b6b4b8d524af0a6422a55[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Wed Nov 5 00:50:10 2025 +0200
+
+    Complete user accessibility logic in backend
+
+[33mcommit c60ea10edddbc993e958bd2067ff832f2bf2e28d[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Tue Nov 4 21:04:06 2025 +0200
+
+    Complete user login logic
+
+[33mcommit 0f035b78e12fdede64db6ae74f031516c5eb0e0a[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Tue Nov 4 20:16:55 2025 +0200
+
+    Complete create user and get all user login
+
+[33mcommit f567b35e77c76d0d711758034eb183d681d48314[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Mon Nov 3 00:40:20 2025 +0200
+
+    Create database migrations files to Repo and complete database part
+
+[33mcommit 0e90a6f7ebd148b328db71e740adc8b1cf4d22b0[m
+Author: uoz <hammambenkina@gmail.com>
+Date:   Sun Nov 2 09:35:35 2025 +0200
+
+    Complete cartographic terms system
+
+[33mcommit ef43cb98360c7df6cd4694a815a16de0e4173a63[m
+Author: hammam <hammambenkina@gmail.com>
+Date:   Fri Oct 31 23:42:04 2025 +0200
+
+    Add classifications category factory and seeder file to Repo
+
+[33mcommit 159fa4ffd483583181c46e6583e2eb79c001309b[m
+Author: hammam <hammambenkina@gmail.com>
+Date:   Fri Oct 31 23:23:11 2025 +0200
+
+    Add request.php config file to Repo
+
+[33mcommit 768c1d2c05eb397deb79ffb6e3ec0185d504dd5b[m
+Author: hammam <hammambenkina@gmail.com>
+Date:   Fri Oct 31 22:25:54 2025 +0200
+
+    Create Classifications DB migrations files
+
+[33mcommit e3e68a6716809454d620c8afd6f35b75f41c2f55[m
+Author: hammam <hammambenkina@gmail.com>
+Date:   Fri Oct 31 17:10:34 2025 +0200
+
+    Change database config info
+
+[33mcommit 440d4546a55bb4099d0977f2301d848ab517c6a7[m
+Author: hammam <hammambenkina@gmail.com>
+Date:   Wed Oct 29 15:19:54 2025 +0200
+
+    Add Project to Repo

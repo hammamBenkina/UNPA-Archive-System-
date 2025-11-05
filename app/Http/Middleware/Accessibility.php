@@ -85,13 +85,14 @@ class Accessibility
         // 5️⃣ التحقق من أن العملية المطلوبة موجودة ضمن صلاحيات الدور
         if ($module && $action) {
 
-            $allowedActions = $accessibility[$role][$module] ?? [];
+            $allowedActions = $accessibility[$role][$module] ?? []; //  ['create', 'edit', 'read', 'delete', 'export', 'report', 'changeActiveStatus']
 
             if (!in_array($action, $allowedActions)) {
                 return response()->json([
                     'message' => "ليس لديك الصلاحية لتنفيذ '$action' على '$module'."
                 ], 403);
             }
+            
         }
 
         // 6️⃣ تمرير الطلب في حال السماح
