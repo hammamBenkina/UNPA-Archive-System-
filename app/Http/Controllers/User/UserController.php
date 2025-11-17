@@ -17,6 +17,21 @@ use Laravel\Sanctum\PersonalAccessToken;
 class UserController extends Controller
 {
 
+    /*
+
+        username : Admin 
+        password : Hammambenkina@@12
+        type : admin
+
+        username : DataEntry 
+        password : Hammambenkina@@12
+        type : data_entry
+
+         username : Viewer 
+        password : Hammambenkina@@12
+        type : viewer
+
+    */
 
     /**
      * Display a listing of the resource.

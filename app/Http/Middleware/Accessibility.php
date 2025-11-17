@@ -54,7 +54,7 @@ class Accessibility
                 'applicants_requests' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
                 'applicant_request_reason' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
                 'branch' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
-                'committee' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
+                'committee' => ['create', 'edit', 'editIsCurrent', 'read', 'delete', 'export', 'report',],
                 'committee_members' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
                 'file' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
                 'record' => ['create', 'edit', 'read', 'delete', 'export', 'report',],
@@ -92,8 +92,10 @@ class Accessibility
                     'message' => "ليس لديك الصلاحية لتنفيذ '$action' على '$module'."
                 ], 403);
             }
-            
         }
+
+        // ✅ تعريف المستخدم كـ auth user في السياق الحالي
+        auth()->setUser($user);
 
         // 6️⃣ تمرير الطلب في حال السماح
         return $next($request);
