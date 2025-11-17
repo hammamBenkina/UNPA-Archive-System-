@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class ClassificationController extends Controller
 {
+<<<<<<< HEAD
 
     
     // ================================================================================
@@ -16,6 +17,8 @@ class ClassificationController extends Controller
     // ================================================================================
 
 
+=======
+>>>>>>> 0e90a6f (Complete cartographic terms system)
     /**
      * Display a listing of the resource.
      */
