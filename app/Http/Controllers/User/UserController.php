@@ -211,9 +211,9 @@ class UserController extends Controller
     }
 
 
-    public function changeActivationStatus(Request $request)
+    public function changeActivationStatus(Request $request, int $userId)
     {
-        $user = User::find($request->userId);
+        $user = User::find($userId);
 
         if (!$user) {
             return response()->json([
